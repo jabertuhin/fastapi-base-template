@@ -31,8 +31,8 @@ jobs:
 
       - name: Test with pytest
         run: |
-          make test
+          poetry run make test
 
       - name: Pre-Commit Hook Checking
         run: |
-          pre-commit run --all-files
+          poetry run pre-commit run --all-files

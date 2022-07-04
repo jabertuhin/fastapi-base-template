@@ -1,1 +1,1 @@
-# fastapi-ml-template
+# FastApi Template

@@ -13,4 +13,4 @@ async def concatenate(
     str2: str,
     string_service: StringServiceImplementation = Depends(StringServiceImplementation),
 ) -> Dict[str, str]:
-    return string_service.concatenate(str1=str1, str2=str2)
+    return {"concatenated_text": string_service.concatenate(str1=str1, str2=str2)}

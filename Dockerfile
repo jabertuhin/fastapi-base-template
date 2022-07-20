@@ -14,9 +14,9 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -y curl \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR $WORK_APP_DIR
-
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+
+WORKDIR $WORK_APP_DIR
 
 COPY pyproject.toml poetry.lock ./
 

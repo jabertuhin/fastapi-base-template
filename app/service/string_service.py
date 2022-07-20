@@ -1,7 +1,7 @@
-from abc import ABC, abstractstaticmethod
+from abc import ABC, abstractmethod
 
 
 class StringService(ABC):
-    @abstractstaticmethod
+    @abstractmethod
     def concatenate(self, str1: str, str2: str) -> str:
         raise NotImplementedError()

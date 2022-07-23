@@ -14,10 +14,16 @@ repos:
     rev: 3.9.2
     hooks:
     - id: flake8
-      stages: [commit]
+      stages: [ commit ]
 
   - repo: https://github.com/psf/black
     rev: 22.6.0
     hooks:
       - id: black
         stages: [ commit ]
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.4
+    hooks:
+    - id: bandit
+      stages: [ push ]

@@ -41,4 +41,3 @@ make html_test_coverage
 ```
 make xml_test_coverage
 ```
-

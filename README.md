@@ -10,7 +10,7 @@ Anyone can use this template to start their project, which contains all the best
 
 ### Development Setup(for)
 
-To install necessary packages. Run following commands from project root 
+To install necessary packages. Run following commands from project root
 ```
 make dev_setup
 make pre_commit_setup

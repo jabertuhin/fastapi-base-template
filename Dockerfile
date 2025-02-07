@@ -1,5 +1,5 @@
 # Image for package building
-FROM python:3.10.4-slim-buster AS builder
+FROM python:3.11.4-slim-buster AS builder
 
 ARG POETRY_VERSION="1.1.13" \
     WORK_APP_DIR="/app"
@@ -25,7 +25,7 @@ RUN poetry export -f requirements.txt --without-hashes --output requirements.txt
 
 
 # Image for deployment
-FROM python:3.10.4-slim-buster
+FROM python:3.11.4-slim-buster
 
 ARG APP_PORT=8080 \
     WORK_APP_DIR="/app"

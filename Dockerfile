@@ -1,26 +1,23 @@
 # Image for package building
 FROM python:3.10.4-slim-buster AS builder
 
-ARG POETRY_VERSION="1.1.13" \
-    WORK_APP_DIR="/app"
+ARG WORK_APP_DIR="/app"
 
 ENV PIP_DISABLE_PIP_VERSION_CHECK=on \
-    POETRY_NO_INTERACTION=1 \
-    POETRY_HOME="/opt/poetry" \
-    POETRY_VERSION=$POETRY_VERSION
-ENV PATH="$POETRY_HOME/bin:$PATH"
+    UV_SYSTEM_PYTHON=1
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y curl \
     && rm -rf /var/lib/apt/lists/*
 
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
 WORKDIR $WORK_APP_DIR
 
-COPY pyproject.toml poetry.lock ./
+COPY pyproject.toml uv.lock ./
 
-RUN poetry export -f requirements.txt --without-hashes --output requirements.txt \
+RUN uv export --no-hashes --output-file requirements.txt \
     && pip wheel --no-cache-dir --wheel-dir $WORK_APP_DIR/wheels -r requirements.txt
 
 

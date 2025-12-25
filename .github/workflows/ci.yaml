@@ -20,10 +20,10 @@ jobs:
         with:
           python-version: '3.10.6'
 
-      - name: Poetry Setup
-        uses: abatilo/actions-poetry@v2.0.0
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
         with:
-          poetry-version: '1.3.1'
+          enable-cache: true
 
       - name: Install dependencies
         run: |
@@ -31,8 +31,8 @@ jobs:
 
       - name: Test with pytest
         run: |
-          poetry run make test
+          uv run make test
 
       - name: Pre-Commit Hook Checking
         run: |
-          poetry run pre-commit run --all-files
+          uv run pre-commit run --all-files

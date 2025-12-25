@@ -7,7 +7,7 @@ server:
 
 .PHONY: dev_setup
 dev_setup:
-	poetry install
+	uv sync --all-extras
 
 .PHONY: pre_commit_setup
 pre_commit_setup:
@@ -15,7 +15,7 @@ pre_commit_setup:
 
 .PHONY: server_setup
 server_setup:
-	poetry install --no-dev
+	uv sync
 
 .PHONY: test
 test:

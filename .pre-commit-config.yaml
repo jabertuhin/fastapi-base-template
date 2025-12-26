@@ -14,19 +14,19 @@ repos:
     rev: 3.9.2
     hooks:
     - id: flake8
-      stages: [ commit ]
+      stages: [ pre-commit ]
 
   - repo: https://github.com/psf/black
     rev: 22.6.0
     hooks:
       - id: black
-        stages: [ commit ]
+        stages: [ pre-commit ]
 
   - repo: https://github.com/PyCQA/bandit
     rev: 1.7.4
     hooks:
     - id: bandit
-      stages: [ push ]
+      stages: [ pre-push ]
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
     rev: v1.3.0

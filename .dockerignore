@@ -31,3 +31,6 @@ venv.bak/
 
 # project specific
 /tests
+
+
+.vscode

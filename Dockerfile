@@ -1,48 +1,38 @@
-# Image for package building
-FROM python:3.10.4-slim-buster AS builder
+# Build stage
+FROM python:3.10.6-slim-buster AS builder
 
-ARG WORK_APP_DIR="/app"
-
-ENV PIP_DISABLE_PIP_VERSION_CHECK=on \
-    UV_SYSTEM_PYTHON=1
-
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y curl \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
-
-WORKDIR $WORK_APP_DIR
-
-COPY pyproject.toml uv.lock ./
-
-RUN uv export --no-hashes --output-file requirements.txt \
-    && pip wheel --no-cache-dir --wheel-dir $WORK_APP_DIR/wheels -r requirements.txt
-
-
-# Image for deployment
-FROM python:3.10.4-slim-buster
-
-ARG APP_PORT=8080 \
-    WORK_APP_DIR="/app"
+ENV UV_SYSTEM_PYTHON=1 \
+    UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    UV_NO_DEV=1
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=on
+    PATH="/.venv/bin:$PATH"
 
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y build-essential \
-    && rm -rf /var/lib/apt/lists/*
+# Copy uv binary from official image
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-WORKDIR $WORK_APP_DIR
+# Set working directory
+WORKDIR /
 
-COPY --from=builder $WORK_APP_DIR/wheels /wheels
+# Copy dependency files
+COPY pyproject.toml uv.lock ./
 
-RUN pip install --no-cache-dir  /wheels/*
+# Install dependencies into /app/.venv
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev --no-install-project
 
+# Copy application code
 COPY . ./
+#
+# Install the project
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev
 
-EXPOSE $APP_PORT
 
-CMD [ "make", "server" ]
+# Expose port
+EXPOSE 8080
+
+# Run gunicorn directly
+CMD ["gunicorn", "app.main:app", "-c", "gunicorn_config.py"]

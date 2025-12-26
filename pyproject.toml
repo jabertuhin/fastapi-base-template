@@ -1,5 +1,5 @@
 [project]
-name = "fastapi-ml-template"
+name = "fastapi-base-template"
 version = "0.1.0"
 description = ""
 authors = [{name = "jabertuhin", email = "jabertuhin@gmail.com"}]

@@ -1,5 +1,5 @@
 # Build stage
-FROM python:3.10.6-slim-buster AS builder
+FROM python:3.11.4-slim-buster AS builder
 
 ENV UV_SYSTEM_PYTHON=1 \
     UV_COMPILE_BYTECODE=1 \

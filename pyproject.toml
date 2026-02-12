@@ -5,7 +5,7 @@ description = ""
 authors = [{name = "jabertuhin", email = "jabertuhin@gmail.com"}]
 requires-python = ">=3.10.6"
 dependencies = [
-    "fastapi==0.127.0",
+    "fastapi==0.129.0",
     "uvicorn>=0.18.2",
     "gunicorn>=20.1.0",
 ]
